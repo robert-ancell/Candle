@@ -1,0 +1,36 @@
+name: candle
+version: git
+summary: GRBL controller application
+description: |
+  GRBL controller application with G-Code visualizer.
+
+grade: devel
+confinement: strict
+base: core18
+
+apps:
+  candle:
+    command: Candle
+    plugs:
+      - desktop
+      - desktop-legacy
+      - network
+      - x11
+      - wayland
+
+parts:
+  candle:
+    source: .
+    source-type: git
+    source-subdir: src
+    plugin: qmake
+    build-packages:
+      - g++
+      - libqt5opengl5-dev
+      - libqt5serialport5-dev
+    override-build: |
+      snapcraftctl build
+      cp src/Candle ${SNAPCRAFT_PART_INSTALL}/Candle
+    stage-packages:
+      - libqt5opengl5
+      - libqt5serialport5
